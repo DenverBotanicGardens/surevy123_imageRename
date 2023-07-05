@@ -98,12 +98,6 @@ def rename_files_from_csv(csv_file):
             # Update the CSV with the new file name
             row['ImageFile'] = new_file_path
 
-    # Rewrite the updated CSV file
-    # with open(csv_file, 'w', newline='') as file:
-    #     writer = csv.DictWriter(file, fieldnames=reader.fieldnames)
-    #     writer.writeheader()
-    #     writer.writerows(reader)
-
 # Specify the CSV file path
 csv_file_path = output_file
 
