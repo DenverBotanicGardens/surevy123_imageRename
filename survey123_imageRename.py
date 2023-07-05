@@ -2,19 +2,19 @@ import os
 import csv
 
 #Specify the desired prefix for the file names
-file_prefix = '2022_CommonGroundGolfCourse_FloristicInventory'
+file_prefix = '20220823_Quercus-welshii_ArizonaUtah_CNewlander'
 
 # Specify the path for the dir containing the image files
-directory_path = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory'
+directory_path = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/20220823_KHD_Quercus-welshii_ArizonaUtah_CNewlander'
 
 # Specify the path for the csv containing the image records
-imageDataCSV = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/specimenImage_table_1.csv'
+imageDataCSV = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/20220823_KHD_Quercus-welshii_ArizonaUtah_CNewlander/specimenImages_1.csv'
 
 # Specify the path for the csv containing the survey123 record data
-surveyRecordsCSV = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/_2022_CommonGrounds_FloristicInventory_0.csv'
+surveyRecordsCSV = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/20220823_KHD_Quercus-welshii_ArizonaUtah_CNewlander/Quercus_welshii_2022_AZ_UT_0.csv'
 
 # Specify the path for the new csv with combined data
-output_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/_2022_CommonGrounds_FloristicInventory_output.csv'
+output_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/20220823_KHD_Quercus-welshii_ArizonaUtah_CNewlander/Quercus_welshii_2022_AZ_UT_output.csv'
 
 
 # Function to get all the jpgs from a directory, sort them as they are in the directory, and add them to a list
