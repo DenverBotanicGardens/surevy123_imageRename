@@ -1,6 +1,23 @@
 import os
 import csv
 
+#Specify the desired prefix for the file names
+file_prefix = '2022_CommonGroundGolfCourse_FloristicInventory'
+
+# Specify the path for the dir containing the image files
+directory_path = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory'
+
+# Specify the path for the csv containing the image records
+imageDataCSV = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/specimenImage_table_1.csv'
+
+# Specify the path for the csv containing the survey123 record data
+surveyRecordsCSV = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/_2022_CommonGrounds_FloristicInventory_0.csv'
+
+# Specify the path for the new csv with combined data
+output_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/_2022_CommonGrounds_FloristicInventory_output.csv'
+
+
+# Function to get all the jpgs from a directory, sort them as they are in the directory, and add them to a list
 def get_jpg_file_names(directory):
     jpg_file_names = sorted(
         [filename for filename in os.listdir(directory) if filename.endswith('.jpg')],
@@ -8,6 +25,7 @@ def get_jpg_file_names(directory):
     )
     return jpg_file_names
 
+#Function to add the jpg file names to an existing csv in a new row.
 def add_file_names_to_csv(csv_file, file_names):
     with open(csv_file, 'r') as file:
         reader = csv.reader(file)
@@ -25,61 +43,23 @@ def add_file_names_to_csv(csv_file, file_names):
         writer = csv.writer(file)
         writer.writerows(rows)
 
-# Specify the directory path
-directory_path = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory'
-
-# Specify the CSV file path
-csv_file_path = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/specimenImage_table_1.csv'
 
 # Get the JPG file names from the directory
 jpg_files = get_jpg_file_names(directory_path)
 
 # Add file names to the CSV file
-add_file_names_to_csv(csv_file_path, jpg_files)
+add_file_names_to_csv(imageDataCSV, jpg_files)
 
 
-# # Function to get file names from directory
-# def get_file_names(directory):
-#     file_names = sorted(os.listdir(directory), key=lambda x: os.path.getmtime(os.path.join(directory, x)))
-#     return file_names
-
-# # Specify the directory path
-# directory_path = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory'
-
-# # Get the file names from the directory
-# files = get_file_names(directory_path)
-
-# # Specify the existing CSV file path
-# csv_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/specimenImage_table_1.csv'
-
-# # Specify the new CSV file path
-# new_csv_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/specimenImage_table__WithFileNames.csv'
-
-# # Open the existing CSV file and create a new CSV file
-# with open(csv_file, 'r') as input_file, open(new_csv_file, 'w', newline='') as output_file:
-#     reader = csv.reader(input_file)
-#     writer = csv.writer(output_file)
-
-#     # Read the existing rows and add a new column for file names
-#     for i, row in enumerate(reader):
-#         if i == 0:  # Header row
-#             row.append('File Name')  # Add new column header
-#         else:
-#             row.append(files[i - 1])  # Add file name from the directory
-
-#         writer.writerow(row)
-
-# print(f"File names added successfully to {new_csv_file}.")
-
-# Function to populate data in CSV1 based on information from CSV2
-def populate_csv(csv1_file, csv2_file, output_file):
+# Function to populate data in csv containing image metadata (csv1) with data from csv containing csv records (csv2). Records are matched using ParentGlobalID in csv1 = GlobalID in csv2.
+def populate_csv(imageDataCSV, surveyRecordsCSV, output_file):
     # Read data from CSV2 and create a dictionary of GlobalID and records
-    with open(csv2_file, 'r') as csv2:
+    with open(surveyRecordsCSV, 'r') as csv2:
         csv2_reader = csv.DictReader(csv2)
         csv2_data = {row['GlobalID']: row for row in csv2_reader}
 
     # Read data from CSV1 and populate with records from CSV2
-    with open(csv1_file, 'r') as csv1:
+    with open(imageDataCSV, 'r') as csv1:
         csv1_reader = csv.DictReader(csv1)
         fieldnames = csv1_reader.fieldnames  # Preserve the fieldnames
         csv2FieldNames = csv2_reader.fieldnames
@@ -99,13 +79,33 @@ def populate_csv(csv1_file, csv2_file, output_file):
 
     print(f"Data populated successfully in {output_file}.")
 
- 
+# Populate imageDataCSV based on information from surveyRecordsCSV
+populate_csv(imageDataCSV, surveyRecordsCSV, output_file)
 
+#Rename the files using data from the output csv
+def rename_files_from_csv(csv_file):
+    with open(csv_file, 'r') as file:
+        reader = csv.DictReader(file)
+        for i, row in enumerate(reader, start=1):
+            # Combine values from multiple rows to generate new file name
+            new_file_name = f"{directory_path}/{file_prefix}_{row['Primary Collector'].replace('_','').replace(' ','')}_{row['Collector Number']}_{i}.jpg"
 
-# Specify the file paths for CSV1, CSV2, and the output file
-csv1_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/specimenImage_table_1.csv'
-csv2_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/_2022_CommonGrounds_FloristicInventory_0.csv'
-output_file = 'Q:/Research/Images(new)/FieldWork/SpecimenCollecting/2022_CommonGroundGolfCourse_FloristicInventory/_2022_CommonGrounds_FloristicInventory_output.csv'
+            # Rename the file
+            old_file_path = directory_path+'/'+row['ImageFile']
+            new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
+            os.rename(old_file_path, new_file_path)
 
-# Populate CSV1 based on information from CSV2
-populate_csv(csv1_file, csv2_file, output_file)
+            # Update the CSV with the new file name
+            row['ImageFile'] = new_file_path
+
+    # Rewrite the updated CSV file
+    # with open(csv_file, 'w', newline='') as file:
+    #     writer = csv.DictWriter(file, fieldnames=reader.fieldnames)
+    #     writer.writeheader()
+    #     writer.writerows(reader)
+
+# Specify the CSV file path
+csv_file_path = output_file
+
+# Call the function to rename files
+rename_files_from_csv(csv_file_path)
