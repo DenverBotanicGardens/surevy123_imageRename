@@ -88,6 +88,7 @@ def rename_files_from_csv(csv_file):
         reader = csv.DictReader(file)
         for i, row in enumerate(reader, start=1):
             # Combine values from multiple rows to generate new file name
+#Specify which columns from which you want to pull info to put into file names and how to format here
             new_file_name = f"{directory_path}/{file_prefix}_{row['Primary Collector'].replace('_','').replace(' ','')}_{row['Collector Number']}_#{i}.jpg"
 
             # Rename the file
